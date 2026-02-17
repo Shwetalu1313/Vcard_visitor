@@ -32,7 +32,6 @@
             padding: 20px;
         }
 
-        /* Phone Frame */
         .phone-container {
             background: var(--card-bg);
             width: 100%;
@@ -47,7 +46,6 @@
             border: 8px solid #333;
         }
 
-        /* Header & Icons */
         .header {
             padding: 45px 25px 20px;
             display: flex;
@@ -114,7 +112,6 @@
             50% { transform: scale(1.1); }
         }
 
-        /* Notification Panel */
         .notification-panel {
             position: absolute;
             top: 0;
@@ -129,11 +126,6 @@
 
         .notification-panel.active {
             display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .notification-content {
@@ -271,7 +263,6 @@
             opacity: 0.3;
         }
 
-        /* Search Area */
         .search-container {
             padding: 0 25px;
             position: relative;
@@ -333,7 +324,6 @@
         .suggestion-item:last-child { border-bottom: none; }
         .suggestion-item:hover { background: #f8fafc; }
 
-        /* Config */
         .config-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -350,7 +340,6 @@
             outline: none;
         }
 
-        /* Profile Card */
         .profile-card {
             margin: 10px 25px 20px;
             padding: 30px;
@@ -390,7 +379,6 @@
             margin-bottom: 25px;
         }
 
-        /* Button Group */
         .button-group {
             display: grid;
             grid-template-columns: 4fr 1fr;
@@ -445,17 +433,6 @@
             font-size: 18px;
         }
 
-        .btn-text {
-            display: none;
-        }
-
-        @media (min-width: 400px) {
-            .btn-text {
-                display: inline;
-            }
-        }
-
-        /* Notification Toasts (Max 2 Logic) */
         .toast-container {
             position: absolute;
             bottom: 100px;
@@ -484,7 +461,6 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* Bottom Nav */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
@@ -493,17 +469,207 @@
             border-top: 1px solid var(--border);
         }
 
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            display: flex;
-            flex-direction: column;
+        /* Onboarding Tutorial Modal */
+        .onboarding-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
 
-        .nav-link.active { color: var(--primary); }
+        .onboarding-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .onboarding-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .onboarding-slide {
+            display: none;
+        }
+
+        .onboarding-slide.active {
+            display: block;
+        }
+
+        .onboarding-illustration {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .onboarding-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .onboarding-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .onboarding-steps {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            padding-top: 2px;
+        }
+
+        .onboarding-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--primary);
+        }
+
+        .onboarding-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .onboarding-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .onboarding-btn-skip {
+            background: #f3f4f6;
+            color: var(--text-muted);
+        }
+
+        .onboarding-btn-skip:hover {
+            background: #e5e7eb;
+        }
+
+        .onboarding-btn-next {
+            background: var(--primary);
+            color: white;
+        }
+
+        .onboarding-btn-next:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .dont-show-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .dont-show-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .dont-show-checkbox label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -516,7 +682,7 @@
                 <span class="material-symbols-outlined">notifications</span>
                 <span class="notification-badge" id="notifBadge"></span>
             </div>
-            <span class="material-symbols-outlined">settings</span>
+            <span class="material-symbols-outlined" onclick="location.href='setting.html'">settings</span>
         </div>
     </header>
 
@@ -545,7 +711,7 @@
         <div class="button-group">
             <button class="btn-primary" id="requestBtn">
                 <span class="material-symbols-outlined btn-icon">check_circle</span>
-                Confirm
+                Request
             </button>
             <button class="btn-secondary" id="messageBtn" title="Send Message">
                 <span class="material-symbols-outlined btn-icon">chat_bubble</span>
@@ -564,8 +730,113 @@
                     <span class="material-symbols-outlined" style="font-size: 20px;">close</span>
                 </div>
             </div>
-            <div class="notification-list" id="notificationList">
-                <!-- Notifications will be inserted here -->
+            <div class="notification-list" id="notificationList"></div>
+        </div>
+    </div>
+
+    <!-- Onboarding Tutorial -->
+    <div id="onboardingModal" class="onboarding-modal">
+        <div class="onboarding-content">
+            <!-- Slide 1 -->
+            <div class="onboarding-slide active" data-slide="1">
+                <div class="onboarding-illustration">🎉</div>
+                <div class="onboarding-title">Request Submitted!</div>
+                <div class="onboarding-description">
+                    Great! Your visit request has been sent to the host. Here's what happens next:
+                </div>
+                <div class="onboarding-steps">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Host reviews your request</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-text">You'll get a notification when approved</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Your QR pass will be ready to use</div>
+                    </div>
+                </div>
+                <div class="onboarding-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="onboarding-buttons">
+                    <button class="onboarding-btn onboarding-btn-skip" id="onboardingSkip">Skip</button>
+                    <button class="onboarding-btn onboarding-btn-next" id="onboardingNext">Next</button>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="onboarding-slide" data-slide="2">
+                <div class="onboarding-illustration">🔔</div>
+                <div class="onboarding-title">Stay Updated</div>
+                <div class="onboarding-description">
+                    Check your notifications regularly to know the status of your requests.
+                </div>
+                <div class="onboarding-steps">
+                    <div class="step-item">
+                        <div class="step-number">📬</div>
+                        <div class="step-text">Approval notifications arrive instantly</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">💬</div>
+                        <div class="step-text">Host can send you messages</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">⏰</div>
+                        <div class="step-text">Get reminders before your visit</div>
+                    </div>
+                </div>
+                <div class="onboarding-dots">
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="onboarding-buttons">
+                    <button class="onboarding-btn onboarding-btn-skip" id="onboardingBack">Back</button>
+                    <button class="onboarding-btn onboarding-btn-next" id="onboardingNext2">Next</button>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="onboarding-slide" data-slide="3">
+                <div class="onboarding-illustration">📱</div>
+                <div class="onboarding-title">Access Your QR Pass</div>
+                <div class="onboarding-description">
+                    Once approved, you can access your QR pass from multiple places:
+                </div>
+                <div class="onboarding-steps">
+                    <div class="step-item">
+                        <div class="step-number icon-step">
+                            <span class="material-symbols-outlined">analytics</span>
+                        </div>
+                        <div class="step-text">Visit History tab</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">👤</div>
+                        <div class="step-text">Your Profile page</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">🔔</div>
+                        <div class="step-text">From the approval notification</div>
+                    </div>
+                </div>
+                <div class="onboarding-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                </div>
+                <div class="dont-show-checkbox">
+                    <input type="checkbox" id="dontShowOnboarding">
+                    <label for="dontShowOnboarding">Don't show me again</label>
+                </div>
+                <div class="onboarding-buttons">
+                    <button class="onboarding-btn onboarding-btn-skip" id="onboardingBack2">Back</button>
+                    <button class="onboarding-btn onboarding-btn-next" id="onboardingDone">Got it!</button>
+                </div>
             </div>
         </div>
     </div>
@@ -587,7 +858,6 @@
         { id: 5, name: "David Kim", position: "Project Manager", avatar: "👨‍💼" }
     ];
 
-    // Notification data
     let notifications = [
         {
             id: 1,
@@ -640,11 +910,69 @@
     const closeNotifications = document.getElementById('closeNotifications');
     const messageBtn = document.getElementById('messageBtn');
 
+    // Onboarding elements
+    const onboardingModal = document.getElementById('onboardingModal');
+    const onboardingSlides = document.querySelectorAll('.onboarding-slide');
+    const onboardingNext = document.getElementById('onboardingNext');
+    const onboardingNext2 = document.getElementById('onboardingNext2');
+    const onboardingSkip = document.getElementById('onboardingSkip');
+    const onboardingBack = document.getElementById('onboardingBack');
+    const onboardingBack2 = document.getElementById('onboardingBack2');
+    const onboardingDone = document.getElementById('onboardingDone');
+    const dontShowOnboarding = document.getElementById('dontShowOnboarding');
+
     let selectedHost = null;
+    let currentOnboardingSlide = 1;
 
     document.getElementById('visitDate').valueAsDate = new Date();
 
-    // --- Professional Toast System (Max 2) ---
+    // Onboarding functions
+    function showOnboardingSlide(slideNumber) {
+        onboardingSlides.forEach((slide, index) => {
+            if (index + 1 === slideNumber) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+        
+        document.querySelectorAll('.onboarding-dots .dot').forEach((dot, index) => {
+            if (index + 1 === slideNumber) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        currentOnboardingSlide = slideNumber;
+    }
+
+    function openOnboarding() {
+        onboardingModal.classList.add('active');
+        showOnboardingSlide(1);
+    }
+
+    function closeOnboarding() {
+        onboardingModal.classList.remove('active');
+        if (dontShowOnboarding.checked) {
+            localStorage.setItem('skipOnboarding', 'true');
+        }
+    }
+
+    // Onboarding navigation
+    onboardingNext.onclick = () => showOnboardingSlide(2);
+    onboardingNext2.onclick = () => showOnboardingSlide(3);
+    onboardingBack.onclick = () => showOnboardingSlide(1);
+    onboardingBack2.onclick = () => showOnboardingSlide(2);
+    onboardingSkip.onclick = closeOnboarding;
+    onboardingDone.onclick = closeOnboarding;
+
+    onboardingModal.onclick = (e) => {
+        if (e.target === onboardingModal) {
+            closeOnboarding();
+        }
+    };
+
     function showNotification(message) {
         const currentToasts = toastContainer.getElementsByClassName('toast');
         if (currentToasts.length >= 2) {
@@ -665,7 +993,6 @@
         }, 3000);
     }
 
-    // --- Notification Panel Functions ---
     function updateNotificationBadge() {
         const unreadCount = notifications.filter(n => n.unread).length;
         if (unreadCount > 0) {
@@ -726,7 +1053,6 @@
         renderNotifications();
     }
 
-    // --- Search Logic ---
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
         suggestions.innerHTML = '';
@@ -767,7 +1093,6 @@
         showNotification(`Host selected: ${host.name}`);
     }
 
-    // --- Interactive Elements ---
     bell.onclick = () => {
         notificationPanel.classList.add('active');
         renderNotifications();
@@ -775,12 +1100,10 @@
 
     closeNotifications.onclick = () => {
         notificationPanel.classList.remove('active');
-        // Mark all as read when closing
         notifications.forEach(n => n.unread = false);
         updateNotificationBadge();
     };
 
-    // Close notification panel when clicking backdrop
     notificationPanel.onclick = (e) => {
         if (e.target === notificationPanel) {
             closeNotifications.click();
@@ -799,6 +1122,14 @@
             `Your visit request to ${selectedHost.name} has been submitted for approval.`,
             'send'
         );
+
+        // Show onboarding if first time
+        const skipOnboarding = localStorage.getItem('skipOnboarding');
+        if (skipOnboarding !== 'true') {
+            setTimeout(() => {
+                openOnboarding();
+            }, 500);
+        }
     };
 
     messageBtn.onclick = () => {
@@ -807,7 +1138,6 @@
             return;
         }
         showNotification(`Opening chat with ${selectedHost.name}...`);
-        // In a real app, this would navigate to the chat screen
         setTimeout(() => {
             addNotification(
                 'message',
@@ -818,12 +1148,10 @@
         }, 1000);
     };
 
-    // Close dropdown on click outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.search-container')) suggestions.style.display = 'none';
     });
 
-    // Initialize
     updateNotificationBadge();
     renderNotifications();
 </script>

@@ -38,6 +38,97 @@ body {
     padding: 20px;
 }
 
+/* Demo Controls Panel */
+.demo-controls {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 280px;
+    border: 1px solid var(--border);
+}
+
+.demo-controls h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-section {
+    margin-bottom: 20px;
+}
+
+.control-section:last-child {
+    margin-bottom: 0;
+}
+
+.control-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.control-btn {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: white;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.control-btn:hover {
+    background: #f9fafb;
+    border-color: var(--primary);
+}
+
+.control-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.control-btn .material-symbols-outlined {
+    font-size: 18px;
+    color: inherit;
+}
+
+.demo-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .demo-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .demo-controls {
+        max-width: 400px;
+        width: 100%;
+    }
+}
+
 .phone-container {
     background: var(--card-bg);
     width: 100%;
@@ -880,6 +971,87 @@ body {
 
 <body>
 
+<div class="demo-wrapper">
+    <!-- Demo Controls Panel -->
+    <div class="demo-controls">
+        <h3>
+            <span class="material-symbols-outlined" style="color: var(--primary);">tune</span>
+            Demo Controls
+        </h3>
+        
+        <div class="control-section">
+            <div class="control-label">Visit Status</div>
+            <button class="control-btn active" onclick="setStatus('approved')">
+                <span class="material-symbols-outlined">check_circle</span>
+                Approved
+            </button>
+            <button class="control-btn" onclick="setStatus('pending')">
+                <span class="material-symbols-outlined">schedule</span>
+                Pending
+            </button>
+            <button class="control-btn" onclick="setStatus('rejected')">
+                <span class="material-symbols-outlined">cancel</span>
+                Rejected
+            </button>
+            <button class="control-btn" onclick="setStatus('closed')">
+                <span class="material-symbols-outlined">task_alt</span>
+                Closed
+            </button>
+        </div>
+
+        <div class="control-section">
+            <div class="control-label">QR Code State</div>
+            <button class="control-btn active" onclick="setQRState('active')">
+                <span class="material-symbols-outlined">qr_code_2</span>
+                Active
+            </button>
+            <button class="control-btn" onclick="setQRState('expired')">
+                <span class="material-symbols-outlined">block</span>
+                Expired
+            </button>
+        </div>
+
+        <div class="control-section">
+            <div class="control-label">Timeline State</div>
+            <button class="control-btn" onclick="setTimelineState('none')">
+                <span class="material-symbols-outlined">remove</span>
+                No Logs
+            </button>
+            <button class="control-btn active" onclick="setTimelineState('entry')">
+                <span class="material-symbols-outlined">login</span>
+                Entry Only
+            </button>
+            <button class="control-btn" onclick="setTimelineState('both')">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                Entry + Exit
+            </button>
+        </div>
+
+        <div class="control-section">
+            <div class="control-label">Visit Type</div>
+            <button class="control-btn active" onclick="setVisitType('normal')">
+                <span class="material-symbols-outlined">today</span>
+                Normal (1 day)
+            </button>
+            <button class="control-btn" onclick="setVisitType('extended')">
+                <span class="material-symbols-outlined">event</span>
+                Extended (2 months)
+            </button>
+        </div>
+
+        <div class="control-section">
+            <div class="control-label">Actions</div>
+            <button class="control-btn" onclick="openQR('VIS-2026-AW88-GECEE21')">
+                <span class="material-symbols-outlined">visibility</span>
+                Show QR Tutorial
+            </button>
+            <button class="control-btn" onclick="resetTutorial()">
+                <span class="material-symbols-outlined">refresh</span>
+                Reset Tutorial
+            </button>
+        </div>
+    </div>
+
 <div class="phone-container">
 
     <div class="header">
@@ -1052,7 +1224,7 @@ body {
             <!-- Slide 2 -->
             <div class="tutorial-slide" data-slide="2">
                 <div class="tutorial-gif">
-                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGhjYWd5cXQwa3JvZHNpbDA4dW9wYnMwNnZrdnRzZnhrZXFydWloNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/KCsydOvAAnvmB4uIYM/giphy.gif" alt="Security Check">
+                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWQ4ZjhiYjY3NzA5NTY5MzVhNjE1NzQ4ZjE5ZWM5NzZlYWY3MDI4OCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/xT0xeuhXyP8KdNTFDi/giphy.gif" alt="Security Check">
                 </div>
                 <div class="tutorial-title">Step 2: Wait for Verification</div>
                 <div class="tutorial-description">
@@ -1099,6 +1271,8 @@ body {
     </div>
 
 </div>
+
+</div><!-- End demo-wrapper -->
 
 <script>
     const toastContainer = document.getElementById('toastContainer');
@@ -1341,6 +1515,154 @@ body {
             closeQR();
         }
     };
+
+    // Demo Control Functions
+    function setStatus(status) {
+        // Update active button
+        document.querySelectorAll('.control-section')[0].querySelectorAll('.control-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.closest('.control-btn').classList.add('active');
+
+        const statusBadge = document.querySelector('.status-badge');
+        const statusValue = document.querySelector('.status-value');
+        const qrCard = document.querySelector('.qr-card');
+        const qrStatusText = document.querySelector('.qr-status-text');
+        const qrValidity = document.querySelector('.qr-validity');
+        const viewQrBtn = document.getElementById('viewQrBtn');
+        const timelineCard = document.querySelector('.timeline-card');
+        const detailsCard = document.querySelector('.details-card');
+
+        if (status === 'approved') {
+            statusBadge.className = 'status-badge status-approved';
+            statusBadge.innerHTML = '<span class="status-dot"></span>Approved';
+            qrCard.style.display = 'block';
+            qrStatusText.textContent = 'QR Code Active';
+            qrValidity.textContent = 'Valid until 6:00 PM today';
+            viewQrBtn.disabled = false;
+            viewQrBtn.style.opacity = '1';
+            timelineCard.style.display = 'block';
+            detailsCard.style.display = 'block';
+            
+        } else if (status === 'pending') {
+            statusBadge.className = 'status-badge';
+            statusBadge.style.background = '#fef3c7';
+            statusBadge.style.color = '#f59e0b';
+            statusBadge.innerHTML = '<span class="status-dot"></span>Pending';
+            qrCard.style.display = 'none';
+            viewQrBtn.disabled = true;
+            viewQrBtn.style.opacity = '0.5';
+            timelineCard.style.display = 'none'; // Hide timeline for pending
+            detailsCard.style.display = 'block';
+            
+        } else if (status === 'rejected') {
+            statusBadge.className = 'status-badge';
+            statusBadge.style.background = '#fee2e2';
+            statusBadge.style.color = '#ef4444';
+            statusBadge.innerHTML = '<span class="status-dot"></span>Rejected';
+            qrCard.style.display = 'none';
+            viewQrBtn.disabled = true;
+            viewQrBtn.style.opacity = '0.5';
+            timelineCard.style.display = 'none'; // Hide timeline for rejected
+            detailsCard.style.display = 'block';
+            
+        } else if (status === 'closed') {
+            statusBadge.className = 'status-badge';
+            statusBadge.style.background = '#dbeafe';
+            statusBadge.style.color = '#3b82f6';
+            statusBadge.innerHTML = '<span class="status-dot"></span>Closed';
+            qrCard.style.display = 'block';
+            qrCard.style.background = 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)';
+            qrStatusText.textContent = 'Visit Closed';
+            qrValidity.textContent = 'This visit has ended';
+            viewQrBtn.disabled = true;
+            viewQrBtn.style.opacity = '0.5';
+            timelineCard.style.display = 'block';
+            detailsCard.style.display = 'block';
+            // Auto-set timeline to show both logs for Closed
+            setTimelineState('both');
+        }
+        
+        showToast(`Status changed to: ${status}`);
+    }
+
+    function setQRState(state) {
+        // Update active button
+        document.querySelectorAll('.control-section')[1].querySelectorAll('.control-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.closest('.control-btn').classList.add('active');
+
+        const qrCard = document.querySelector('.qr-card');
+        const qrStatusText = document.querySelector('.qr-status-text');
+        const qrValidity = document.querySelector('.qr-validity');
+
+        if (state === 'active') {
+            qrCard.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            qrStatusText.textContent = 'QR Code Active';
+            qrValidity.textContent = 'Valid until 6:00 PM today';
+        } else if (state === 'expired') {
+            qrCard.style.background = 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)';
+            qrStatusText.textContent = 'QR Code Expired';
+            qrValidity.textContent = 'This pass is no longer valid';
+        }
+        
+        showToast(`QR state: ${state}`);
+    }
+
+    function setVisitType(type) {
+        // Update active button
+        document.querySelectorAll('.control-section')[3].querySelectorAll('.control-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.closest('.control-btn').classList.add('active');
+
+        const typeValue = document.querySelector('.status-grid .status-value');
+        
+        if (type === 'normal') {
+            typeValue.textContent = 'Normal';
+        } else if (type === 'extended') {
+            typeValue.textContent = 'Extended';
+        }
+        
+        showToast(`Visit type: ${type}`);
+    }
+
+    function setTimelineState(state) {
+        // Update active button
+        document.querySelectorAll('.control-section')[2].querySelectorAll('.control-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        if (event && event.target) {
+            event.target.closest('.control-btn').classList.add('active');
+        }
+
+        const timelineCard = document.querySelector('.timeline-card');
+        const timelineItems = timelineCard.querySelectorAll('.timeline-item');
+        const entryLog = timelineItems[0];
+        const exitLog = timelineItems[1];
+
+        if (state === 'none') {
+            timelineCard.style.display = 'none';
+        } else if (state === 'entry') {
+            timelineCard.style.display = 'block';
+            entryLog.style.display = 'flex';
+            exitLog.style.display = 'none';
+        } else if (state === 'both') {
+            timelineCard.style.display = 'block';
+            entryLog.style.display = 'flex';
+            exitLog.style.display = 'flex';
+        }
+        
+        if (event && event.target) {
+            showToast(`Timeline: ${state}`);
+        }
+    }
+
+    function resetTutorial() {
+        localStorage.removeItem('skipQRTutorial');
+        showToast('Tutorial reset! It will show again on QR view.');
+    }
 </script>
 
 </body>

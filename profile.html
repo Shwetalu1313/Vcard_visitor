@@ -16,7 +16,82 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #c3cfe2; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        body { 
+            background: #c3cfe2; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 280px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .demo-controls h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-btn {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .demo-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .demo-btn .material-symbols-outlined {
+            font-size: 20px;
+        }
+
+        .demo-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .demo-controls {
+                max-width: 400px;
+                width: 100%;
+            }
+        }
 
         .phone-container {
             background: #fff;
@@ -406,10 +481,165 @@
             border-top: 1px solid #f1f5f9;
         }
 
+        /* Security Scan Confirmation Modal */
+        .scan-confirmation-modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .scan-confirmation-modal.active {
+            display: flex;
+        }
+
+        .scan-confirmation-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            from { 
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .scan-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .scan-icon-wrapper .material-symbols-outlined {
+            font-size: 48px;
+            color: white;
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .scan-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .scan-message {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .scan-visitor-info {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .scan-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .scan-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .scan-info-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .scan-info-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .scan-confirm-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .scan-confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .scan-confirm-btn .material-symbols-outlined {
+            font-size: 24px;
+        }
+
         #fileInput { display: none; }
     </style>
 </head>
 <body>
+
+<div class="demo-wrapper">
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+        <h3>
+            <span class="material-symbols-outlined" style="color: var(--primary);">science</span>
+            Demo Controls
+        </h3>
+        <button class="demo-btn" onclick="simulateSecurityScan()">
+            <span class="material-symbols-outlined">qr_code_scanner</span>
+            Simulate Security Scan
+        </button>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px; text-align: center;">
+            This simulates what happens when security scans your QR code at the gate
+        </p>
+    </div>
 
 <div class="phone-container">
     <div class="profile-header-card">
@@ -441,9 +671,20 @@
         <div class="request-item">
             <div class="request-info-side" onclick="location.href='log-detail.html'">
                 <div class="host-initials">AW</div>
-                <div>
-                    <p style="font-size: 0.9rem; font-weight: 700;">Alexander Wright</p>
-                    <p style="font-size: 0.75rem; color: var(--success); font-weight: 600;">● Approved</p>
+                <div style="flex: 1;">
+                    <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 2px;">Alexander Wright</p>
+                    <p style="font-size: 0.75rem; color: var(--success); font-weight: 600; margin-bottom: 4px;">● Approved</p>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--text-muted);">
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">calendar_today</span>
+                            Feb 20, 2026
+                        </span>
+                        <span style="color: #cbd5e1;">•</span>
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">business_center</span>
+                            CTO
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="qr-action-side" onclick="openQR('VIS-2026-AW88-GECEE21')">
@@ -455,10 +696,67 @@
         <div class="request-item" style="opacity: 0.7;">
             <div class="request-info-side">
                 <div class="host-initials" style="background: #fff7ed; color: #f97316;">SJ</div>
-                <div>
-                    <p style="font-size: 0.9rem; font-weight: 700;">Sarah Jenkins</p>
-                    <p style="font-size: 0.75rem; color: #f59e0b; font-weight: 600;">● Pending Approval</p>
+                <div style="flex: 1;">
+                    <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 2px;">Sarah Jenkins</p>
+                    <p style="font-size: 0.75rem; color: #f59e0b; font-weight: 600; margin-bottom: 4px;">● Pending Approval</p>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--text-muted);">
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">calendar_today</span>
+                            Feb 18, 2026
+                        </span>
+                        <span style="color: #cbd5e1;">•</span>
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">badge</span>
+                            Operations Manager
+                        </span>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="request-item" style="opacity: 0.5;">
+            <div class="request-info-side">
+                <div class="host-initials" style="background: #fee2e2; color: #ef4444;">MC</div>
+                <div style="flex: 1;">
+                    <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 2px;">Michael Chen</p>
+                    <p style="font-size: 0.75rem; color: #ef4444; font-weight: 600; margin-bottom: 4px;">● Rejected</p>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--text-muted);">
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">calendar_today</span>
+                            Feb 15, 2026
+                        </span>
+                        <span style="color: #cbd5e1;">•</span>
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">engineering</span>
+                            IT Lead
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="request-item">
+            <div class="request-info-side" onclick="location.href='log-detail.html'">
+                <div class="host-initials" style="background: #dbeafe; color: #3b82f6;">ER</div>
+                <div style="flex: 1;">
+                    <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 2px;">Elena Rodriguez</p>
+                    <p style="font-size: 0.75rem; color: #3b82f6; font-weight: 600; margin-bottom: 4px;">● Completed</p>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--text-muted);">
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">calendar_today</span>
+                            Feb 12, 2026
+                        </span>
+                        <span style="color: #cbd5e1;">•</span>
+                        <span style="display: flex; align-items: center; gap: 3px;">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">groups</span>
+                            HR Director
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="qr-action-side" onclick="openQR('VIS-2026-ER45-XYZCF89')" style="opacity: 0.5; pointer-events: none;">
+                <span class="material-symbols-outlined">qr_code_2</span>
+                <div class="qr-label">Expired</div>
             </div>
         </div>
     </div>
@@ -540,7 +838,46 @@
             </button>
         </div>
     </div>
+
+    <!-- Security Scan Confirmation Modal -->
+    <div id="scanConfirmationModal" class="scan-confirmation-modal">
+        <div class="scan-confirmation-content">
+            <div class="scan-icon-wrapper">
+                <span class="material-symbols-outlined">verified</span>
+            </div>
+            <div class="scan-title">QR Code Scanned!</div>
+            <div class="scan-message">
+                Security has verified your visitor pass. Please confirm your identity to proceed.
+            </div>
+            
+            <div class="scan-visitor-info">
+                <div class="scan-info-row">
+                    <span class="scan-info-label">Visitor Name</span>
+                    <span class="scan-info-value">John Doe</span>
+                </div>
+                <div class="scan-info-row">
+                    <span class="scan-info-label">Host</span>
+                    <span class="scan-info-value">Alexander Wright</span>
+                </div>
+                <div class="scan-info-row">
+                    <span class="scan-info-label">Visit Date</span>
+                    <span class="scan-info-value">Feb 20, 2026</span>
+                </div>
+                <div class="scan-info-row">
+                    <span class="scan-info-label">Status</span>
+                    <span class="scan-info-value" style="color: var(--success);">● Verified</span>
+                </div>
+            </div>
+
+            <button class="scan-confirm-btn" onclick="confirmIdentity()">
+                <span class="material-symbols-outlined">check_circle</span>
+                Yes, I Am
+            </button>
+        </div>
+    </div>
 </div>
+
+</div><!-- End demo-wrapper -->
 
 <script>
     const STORAGE_KEY = 'user_profile_data';
@@ -766,6 +1103,55 @@
     qrModal.onclick = (e) => {
         if (e.target === qrModal) {
             closeQR();
+        }
+    };
+
+    // Security Scan Simulation
+    function simulateSecurityScan() {
+        const scanModal = document.getElementById('scanConfirmationModal');
+        scanModal.classList.add('active');
+        
+        // Play a beep sound (simulated)
+        playBeep();
+    }
+
+    function confirmIdentity() {
+        const scanModal = document.getElementById('scanConfirmationModal');
+        scanModal.classList.remove('active');
+        
+        // Show success message
+        setTimeout(() => {
+            alert('✅ Access Granted! Welcome to the facility.');
+        }, 300);
+    }
+
+    function playBeep() {
+        // Create a simple beep sound using Web Audio API
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        } catch (e) {
+            console.log('Audio not supported');
+        }
+    }
+
+    // Close scan modal on outside click
+    document.getElementById('scanConfirmationModal').onclick = (e) => {
+        if (e.target.id === 'scanConfirmationModal') {
+            document.getElementById('scanConfirmationModal').classList.remove('active');
         }
     };
 </script>

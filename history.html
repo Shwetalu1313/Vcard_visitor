@@ -242,7 +242,7 @@ body {
 .status-pending { background: var(--warning); }
 .status-approved { background: var(--success); }
 .status-rejected { background: var(--danger); }
-.status-completed { background: var(--info); }
+.status-closed { background: var(--info); }
 
 .log-details {
     display: grid;
@@ -398,7 +398,7 @@ body {
             <option value="Approved">Approved</option>
             <option value="Pending">Pending</option>
             <option value="Rejected">Rejected</option>
-            <option value="Completed">Completed</option>
+            <option value="Closed">Closed</option>
         </select>
         <select id="sortFilter">
             <option value="newest">Newest First</option>
@@ -449,7 +449,7 @@ const sampleLogs = [
         position: "IT Lead",
         date: "2026-02-12",
         type: "Standard (1 day)",
-        status: "Completed",
+        status: "Closed",
         createdAt: "2026-02-10 11:45 AM",
         timestamp: new Date("2026-02-10T11:45:00").getTime()
     },
@@ -489,7 +489,7 @@ const sampleLogs = [
         position: "CFO",
         date: "2026-02-08",
         type: "Standard (1 day)",
-        status: "Completed",
+        status: "Closed",
         createdAt: "2026-02-05 01:30 PM",
         timestamp: new Date("2026-02-05T13:30:00").getTime()
     },
@@ -533,7 +533,7 @@ function showToast(message) {
 }
 
 function updateStats(logs) {
-    const approved = logs.filter(log => log.status === "Approved" || log.status === "Completed").length;
+    const approved = logs.filter(log => log.status === "Approved" || log.status === "Closed").length;
     const pending = logs.filter(log => log.status === "Pending").length;
     const total = logs.length;
 
@@ -547,7 +547,7 @@ function getStatusIcon(status) {
         case "Approved": return "check_circle";
         case "Pending": return "schedule";
         case "Rejected": return "cancel";
-        case "Completed": return "task_alt";
+        case "Closed": return "task_alt";
         default: return "help";
     }
 }
