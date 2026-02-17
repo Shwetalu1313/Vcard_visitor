@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Pro - Scalable Messages</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --bg-body: #f3f4f6;
+            --unread: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #c3cfe2; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+
+        .phone-container {
+            background: #fff; width: 100%; max-width: 400px; height: 800px;
+            border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; overflow: hidden;
+            border: 8px solid #1f2937; position: relative;
+        }
+
+        /* Main Screen Header */
+        .header {
+            padding: 50px 20px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .header h1 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
+
+        /* Search Bars */
+        .search-area { padding: 15px 20px; }
+        .search-bar {
+            background: #f1f5f9; border-radius: 12px; padding: 10px 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .search-bar input { border: none; background: transparent; flex-grow: 1; outline: none; font-size: 0.95rem; }
+
+        /* History List */
+        .history-container { flex-grow: 1; overflow-y: auto; }
+        .chat-row {
+            padding: 15px 20px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid #f8fafc; cursor: pointer; transition: 0.2s;
+        }
+        .chat-row:active { background: #f1f5f9; }
+
+        .avatar-box {
+            width: 55px; height: 55px; border-radius: 18px;
+            background: var(--primary-light); color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.1rem; flex-shrink: 0;
+        }
+
+        .chat-details { flex-grow: 1; overflow: hidden; }
+        .chat-meta { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .chat-meta h4 { font-size: 0.95rem; color: var(--text-main); font-weight: 700; }
+        .time-label { font-size: 0.7rem; color: var(--text-muted); }
+
+        .preview-flex { display: flex; justify-content: space-between; align-items: center; }
+        .preview-text { 
+            font-size: 0.8rem; color: var(--text-muted); 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+        }
+        .badge {
+            background: var(--unread); color: white; font-size: 0.65rem;
+            min-width: 18px; height: 18px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+        }
+
+        /* FAB - Floating Action Button */
+        .fab {
+            position: absolute; bottom: 100px; right: 25px;
+            width: 60px; height: 60px; border-radius: 20px;
+            background: var(--primary); color: white;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            cursor: pointer; z-index: 10;
+        }
+
+        /* FULL SCREEN OVERLAY FOR 1000+ USERS */
+        .full-overlay {
+            position: absolute; inset: 0; background: #fff;
+            display: none; flex-direction: column; z-index: 1000;
+            animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .overlay-header {
+            padding: 50px 20px 15px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .index-sticky {
+            background: #f8fafc; padding: 6px 20px;
+            font-size: 0.75rem; font-weight: 800; color: var(--primary);
+            position: sticky; top: 0; z-index: 2;
+        }
+
+        .contact-item {
+            padding: 12px 20px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid #f9fafb; cursor: pointer;
+        }
+
+        .bottom-nav {
+            display: flex; justify-content: space-around; padding: 12px 0 30px;
+            background: #fff; border-top: 1px solid #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    <header class="header">
+        <h1>Messages</h1>
+        <span class="material-symbols-outlined" style="color: var(--primary);">edit_square</span>
+    </header>
+
+    <div class="search-area">
+        <div class="search-bar">
+            <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 20px;">search</span>
+            <input type="text" id="historySearch" placeholder="Search conversations...">
+        </div>
+    </div>
+
+    <div class="history-container" id="historyList">
+        <div class="chat-row" onclick="location.href='chat.html'">
+            <div class="avatar-box">AW</div>
+            <div class="chat-details">
+                <div class="chat-meta">
+                    <h4>Alexander Wright</h4>
+                    <span class="time-label">10:46 AM</span>
+                </div>
+                <div class="preview-flex">
+                    <p class="preview-text">Sounds good. See you soon!</p>
+                    <div class="badge">1</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fab" onclick="toggleOverlay(true)">
+        <span class="material-symbols-outlined" style="font-size: 30px;">add_comment</span>
+    </div>
+
+    <div id="newChatOverlay" class="full-overlay">
+        <div class="overlay-header">
+            <span class="material-symbols-outlined" onclick="toggleOverlay(false)" style="cursor:pointer">close</span>
+            <h2 style="font-size: 1.1rem; font-weight: 800;">Start New Chat</h2>
+        </div>
+        
+        <div class="search-area" style="background: #f8fafc;">
+            <div class="search-bar" style="background: #fff; border: 1px solid #e2e8f0;">
+                <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 20px;">search</span>
+                <input type="text" id="userSearchInput" placeholder="Find by name, role, or department...">
+            </div>
+        </div>
+
+        <div class="history-container" id="contactList">
+            </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <span class="material-symbols-outlined" onclick="location.href='index.html'">home</span>
+        <span class="material-symbols-outlined" onclick="location.href='history.html'">analytics</span>
+        <span class="material-symbols-outlined" onclick="location.href='chat-history.html'" style="color: var(--primary); font-variation-settings: 'FILL' 1;">chat_bubble</span>
+        <span class="material-symbols-outlined" onclick="location.href='profile.html'">account_circle</span>
+    </nav>
+</div>
+
+<script>
+    // 1. Mock Data for 1000+ User Context
+    const allUsers = [
+        { name: "Alexander Wright", role: "CTO", dept: "Engineering" },
+        { name: "Aaron Becker", role: "Lead", dept: "Security" },
+        { name: "Bernice Tan", role: "Manager", dept: "Human Resources" },
+        { name: "Brendan Cole", role: "Staff", dept: "Operations" },
+        { name: "Michael Chen", role: "Senior Lead", dept: "IT Support" },
+        { name: "Sarah Jenkins", role: "Director", dept: "Operations" }
+    ];
+
+    // 2. Navigation & Modal Logic
+    function toggleOverlay(show) {
+        const overlay = document.getElementById('newChatOverlay');
+        overlay.style.display = show ? 'flex' : 'none';
+        if (show) {
+            renderScalableList(allUsers);
+            document.getElementById('userSearchInput').focus();
+        }
+    }
+
+    // 3. Alphabetical Rendering for High Scale
+    function renderScalableList(data) {
+        const container = document.getElementById('contactList');
+        container.innerHTML = "";
+        
+        const sorted = data.sort((a,b) => a.name.localeCompare(b.name));
+        const grouped = sorted.reduce((acc, user) => {
+            const letter = user.name[0].toUpperCase();
+            if (!acc[letter]) acc[letter] = [];
+            acc[letter].push(user);
+            return acc;
+        }, {});
+
+        for (const letter in grouped) {
+            const label = document.createElement('div');
+            label.className = 'index-sticky';
+            label.innerText = letter;
+            container.appendChild(label);
+
+            grouped[letter].forEach(user => {
+                const item = document.createElement('div');
+                item.className = 'contact-item';
+                item.onclick = () => location.href = 'chat.html';
+                item.innerHTML = `
+                    <div class="avatar-box" style="width:40px; height:40px; font-size:0.8rem; border-radius:12px;">
+                        ${user.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div>
+                        <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-main);">${user.name}</p>
+                        <p style="font-size: 0.7rem; color: var(--text-muted);">${user.role} • ${user.dept}</p>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+    }
+
+    // 4. Real-time Search Logic
+    document.getElementById('userSearchInput').oninput = function(e) {
+        const term = e.target.value.toLowerCase();
+        const filtered = allUsers.filter(u => 
+            u.name.toLowerCase().includes(term) || 
+            u.dept.toLowerCase().includes(term) ||
+            u.role.toLowerCase().includes(term)
+        );
+        renderScalableList(filtered);
+    };
+
+    // History Search
+    document.getElementById('historySearch').oninput = function(e) {
+        const term = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('.chat-row');
+        rows.forEach(row => {
+            const name = row.querySelector('h4').innerText.toLowerCase();
+            row.style.display = name.includes(term) ? 'flex' : 'none';
+        });
+    };
+</script>
+
+</body>
+</html>

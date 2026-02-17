@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Request Pro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Phone Frame */
+        .phone-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            height: 800px;
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border: 8px solid #333;
+        }
+
+        /* Header & Icons */
+        .header {
+            padding: 45px 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            user-select: none;
+        }
+
+        .material-symbols-outlined:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .notification-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            min-width: 18px;
+            height: 18px;
+            background-color: #ef4444;
+            border: 2px solid white;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            padding: 0 4px;
+        }
+
+        .notification-badge.active {
+            display: flex;
+            animation: badgePulse 2s infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .notification-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .notification-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 40px 0 0 40px;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .notification-header {
+            padding: 45px 25px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h2 {
+            font-size: 1.3rem;
+            color: var(--text-main);
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .notification-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .notification-item {
+            padding: 16px 25px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            gap: 12px;
+        }
+
+        .notification-item:hover {
+            background: #f9fafb;
+        }
+
+        .notification-item.unread {
+            background: #f0f9ff;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-icon .material-symbols-outlined {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .notification-body {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-top: 6px;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .empty-state .material-symbols-outlined {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        /* Search Area */
+        .search-container {
+            padding: 0 25px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-icon-inline {
+            position: absolute;
+            left: 15px;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .suggestions-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 25px;
+            right: 25px;
+            background: white;
+            border-radius: 12px;
+            margin-top: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            border: 1px solid var(--border);
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.9rem;
+        }
+
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background: #f8fafc; }
+
+        /* Config */
+        .config-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 20px 25px;
+        }
+
+        .config-row input, .config-row select {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            margin: 10px 25px 20px;
+            padding: 30px;
+            background: #fff;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid var(--border);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .avatar-box {
+            width: 90px;
+            height: 90px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .profile-card h2 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .profile-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        /* Button Group */
+        .button-group {
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary:hover { 
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 52px;
+        }
+
+        .btn-secondary:hover { 
+            background: #f0f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-icon {
+            font-size: 18px;
+        }
+
+        .btn-text {
+            display: none;
+        }
+
+        @media (min-width: 400px) {
+            .btn-text {
+                display: inline;
+            }
+        }
+
+        /* Notification Toasts (Max 2 Logic) */
+        .toast-container {
+            position: absolute;
+            bottom: 100px;
+            left: 25px;
+            right: 25px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: #1f2937;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease-out;
+            pointer-events: auto;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 35px;
+            background: #fff;
+            border-top: 1px solid var(--border);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link.active { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    <header class="header">
+        <h1>Visit Request</h1>
+        <div class="header-actions">
+            <div class="notification-wrapper" id="notificationBell">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="notification-badge" id="notifBadge"></span>
+            </div>
+            <span class="material-symbols-outlined">settings</span>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="input-wrapper">
+            <span class="material-symbols-outlined search-icon-inline">search</span>
+            <input type="text" id="hostSearch" class="search-input" placeholder="Search for a host...">
+        </div>
+        <div id="suggestions" class="suggestions-dropdown"></div>
+    </div>
+
+    <div class="config-row">
+        <input type="date" id="visitDate">
+        <select id="visitType">
+            <option>Standard (1 day)</option>
+            <option>Special (2 months)</option>
+        </select>
+    </div>
+
+    <div class="profile-card">
+        <div class="avatar-box" id="avatarBox">
+            <span class="material-symbols-outlined" style="font-size: 40px;">person</span>
+        </div>
+        <h2 id="displayName">Find a Host</h2>
+        <p id="displayPosition">Select a host to begin</p>
+        <div class="button-group">
+            <button class="btn-primary" id="requestBtn">
+                <span class="material-symbols-outlined btn-icon">check_circle</span>
+                Confirm
+            </button>
+            <button class="btn-secondary" id="messageBtn" title="Send Message">
+                <span class="material-symbols-outlined btn-icon">chat_bubble</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-content">
+            <div class="notification-header">
+                <h2>Notifications</h2>
+                <div class="close-btn" id="closeNotifications">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">close</span>
+                </div>
+            </div>
+            <div class="notification-list" id="notificationList">
+                <!-- Notifications will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <span class="material-symbols-outlined" onclick="location.href='index.html'" style="color: var(--primary); font-variation-settings: 'FILL' 1;">home</span>
+        <span class="material-symbols-outlined" onclick="location.href='history.html'">analytics</span>
+        <span class="material-symbols-outlined" onclick="location.href='chat-history.html'">chat_bubble</span>
+        <span class="material-symbols-outlined" onclick="location.href='profile.html'">account_circle</span>
+    </nav>
+</div>
+
+<script>
+    const hostData = [
+        { id: 1, name: "Alexander Wright", position: "CTO", avatar: "👨‍💻" },
+        { id: 2, name: "Sarah Jenkins", position: "Operations", avatar: "👩‍💼" },
+        { id: 3, name: "Michael Chen", position: "IT Lead", avatar: "👨‍🔬" },
+        { id: 4, name: "Elena Rodriguez", position: "HR Director", avatar: "👩‍🎨" },
+        { id: 5, name: "David Kim", position: "Project Manager", avatar: "👨‍💼" }
+    ];
+
+    // Notification data
+    let notifications = [
+        {
+            id: 1,
+            type: 'request',
+            title: 'Visit Request Approved',
+            message: 'Your visit request to see Alexander Wright has been approved for tomorrow.',
+            time: '2 hours ago',
+            unread: true,
+            icon: 'check_circle'
+        },
+        {
+            id: 2,
+            type: 'message',
+            title: 'New Message',
+            message: 'Sarah Jenkins sent you a message regarding your upcoming visit.',
+            time: '5 hours ago',
+            unread: true,
+            icon: 'mail'
+        },
+        {
+            id: 3,
+            type: 'reminder',
+            title: 'Visit Reminder',
+            message: 'You have a scheduled visit with Michael Chen today. Please be prepared.',
+            time: '1 day ago',
+            unread: false,
+            icon: 'schedule'
+        },
+        {
+            id: 4,
+            type: 'system',
+            title: 'System Update',
+            message: 'The visitor management system will undergo maintenance this weekend.',
+            time: '2 days ago',
+            unread: false,
+            icon: 'info'
+        }
+    ];
+
+    const searchInput = document.getElementById('hostSearch');
+    const suggestions = document.getElementById('suggestions');
+    const displayName = document.getElementById('displayName');
+    const displayPosition = document.getElementById('displayPosition');
+    const avatarBox = document.getElementById('avatarBox');
+    const toastContainer = document.getElementById('toastContainer');
+    const bell = document.getElementById('notificationBell');
+    const badge = document.getElementById('notifBadge');
+    const notificationPanel = document.getElementById('notificationPanel');
+    const notificationList = document.getElementById('notificationList');
+    const closeNotifications = document.getElementById('closeNotifications');
+    const messageBtn = document.getElementById('messageBtn');
+
+    let selectedHost = null;
+
+    document.getElementById('visitDate').valueAsDate = new Date();
+
+    // --- Professional Toast System (Max 2) ---
+    function showNotification(message) {
+        const currentToasts = toastContainer.getElementsByClassName('toast');
+        if (currentToasts.length >= 2) {
+            currentToasts[0].remove();
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s';
+                setTimeout(() => toast.remove(), 400);
+            }
+        }, 3000);
+    }
+
+    // --- Notification Panel Functions ---
+    function updateNotificationBadge() {
+        const unreadCount = notifications.filter(n => n.unread).length;
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            badge.classList.add('active');
+        } else {
+            badge.classList.remove('active');
+        }
+    }
+
+    function renderNotifications() {
+        if (notifications.length === 0) {
+            notificationList.innerHTML = `
+                <div class="empty-state">
+                    <span class="material-symbols-outlined">notifications_off</span>
+                    <p>No notifications yet</p>
+                </div>
+            `;
+            return;
+        }
+
+        notificationList.innerHTML = notifications.map(notif => `
+            <div class="notification-item ${notif.unread ? 'unread' : ''}" onclick="markAsRead(${notif.id})">
+                <div class="notification-icon">
+                    <span class="material-symbols-outlined">${notif.icon}</span>
+                </div>
+                <div class="notification-body">
+                    <div class="notification-title">${notif.title}</div>
+                    <div class="notification-message">${notif.message}</div>
+                    <div class="notification-time">${notif.time}</div>
+                </div>
+                ${notif.unread ? '<div class="notification-dot"></div>' : ''}
+            </div>
+        `).join('');
+    }
+
+    function markAsRead(notifId) {
+        const notif = notifications.find(n => n.id === notifId);
+        if (notif) {
+            notif.unread = false;
+            updateNotificationBadge();
+            renderNotifications();
+        }
+    }
+
+    function addNotification(type, title, message, icon) {
+        const newNotif = {
+            id: notifications.length + 1,
+            type: type,
+            title: title,
+            message: message,
+            time: 'Just now',
+            unread: true,
+            icon: icon
+        };
+        notifications.unshift(newNotif);
+        updateNotificationBadge();
+        renderNotifications();
+    }
+
+    // --- Search Logic ---
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        suggestions.innerHTML = '';
+        
+        if (query.length < 1) {
+            suggestions.style.display = 'none';
+            return;
+        }
+
+        const matches = hostData.filter(h => h.name.toLowerCase().includes(query));
+
+        if (matches.length > 0) {
+            matches.forEach(host => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.innerHTML = `<strong>${host.name}</strong> • <small>${host.position}</small>`;
+                item.onclick = () => selectHost(host);
+                suggestions.appendChild(item);
+            });
+        } else {
+            const noRes = document.createElement('div');
+            noRes.className = 'suggestion-item';
+            noRes.style.color = '#999';
+            noRes.textContent = "No matches found";
+            suggestions.appendChild(noRes);
+        }
+        suggestions.style.display = 'block';
+    });
+
+    function selectHost(host) {
+        selectedHost = host;
+        searchInput.value = host.name;
+        displayName.textContent = host.name;
+        displayPosition.textContent = host.position;
+        avatarBox.textContent = host.avatar;
+        avatarBox.style.background = '#e0e7ff';
+        suggestions.style.display = 'none';
+        showNotification(`Host selected: ${host.name}`);
+    }
+
+    // --- Interactive Elements ---
+    bell.onclick = () => {
+        notificationPanel.classList.add('active');
+        renderNotifications();
+    };
+
+    closeNotifications.onclick = () => {
+        notificationPanel.classList.remove('active');
+        // Mark all as read when closing
+        notifications.forEach(n => n.unread = false);
+        updateNotificationBadge();
+    };
+
+    // Close notification panel when clicking backdrop
+    notificationPanel.onclick = (e) => {
+        if (e.target === notificationPanel) {
+            closeNotifications.click();
+        }
+    };
+
+    document.getElementById('requestBtn').onclick = () => {
+        if(displayName.textContent === "Find a Host") {
+            showNotification("Please select a host first.");
+            return;
+        }
+        showNotification("Success! Request sent.");
+        addNotification(
+            'request',
+            'Visit Request Sent',
+            `Your visit request to ${selectedHost.name} has been submitted for approval.`,
+            'send'
+        );
+    };
+
+    messageBtn.onclick = () => {
+        if(displayName.textContent === "Find a Host") {
+            showNotification("Please select a host first.");
+            return;
+        }
+        showNotification(`Opening chat with ${selectedHost.name}...`);
+        // In a real app, this would navigate to the chat screen
+        setTimeout(() => {
+            addNotification(
+                'message',
+                'Message Sent',
+                `Your message to ${selectedHost.name} has been delivered.`,
+                'chat_bubble'
+            );
+        }, 1000);
+    };
+
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) suggestions.style.display = 'none';
+    });
+
+    // Initialize
+    updateNotificationBadge();
+    renderNotifications();
+</script>
+
+</body>
+</html>
